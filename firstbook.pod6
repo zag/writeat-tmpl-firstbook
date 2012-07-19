@@ -1,0 +1,27 @@
+=begin pod
+=begin CHANGES
+Jul 18th 2012(v0.1)[i]   init
+=end CHANGES
+=TITLE Test
+=SUBTITLE Book template
+=DESCRIPTION Short description about this book
+=AUTHOR My I Am
+
+=CHAPTER Ohai
+
+My First Book
+
+=Include src/ch1.pod6
+
+=CHAPTER Tables
+
+Simple tables can be specified in Pod using a C<=table> block.
+
+=for table :caption('book formats')
+type	     	|	Format
+================|=====================
+printed		|	scroll, codex 
+electronic	|	EPUB, PDF, TXT, RTF, HTML, AZW, FB2, BBeB, DOC, non-DRM MOBI, PRC
+
+
+=end pod

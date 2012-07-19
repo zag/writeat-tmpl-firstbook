@@ -1,0 +1,55 @@
+@import "l0.css";
+
+h3 {
+    font-size: 1em;
+}
+p {
+       text-align: justify;
+    text-indent: 1em;
+    line-height: 1.5em;
+}
+#header {
+    margin-bottom: 1em;
+}
+#content {
+   width: 65em;
+   margin: 0 auto;
+}
+#description {
+ width: 30em;
+  float: left;
+}
+#footer {
+  clear: both;
+  border-top: 1px solid #AAAAAA;
+}
+#license {
+    margin-top:0.5em;
+}
+#cover {
+    margin-left: 1em;
+    float:left; 
+}
+
+#get a {
+   float: left;
+    font-size: 1.2em;
+    text-decoration: none;
+    width: 140px;
+}
+
+#get a span {
+    display: block;
+    font-size: 0.6em;
+}
+a, a:active, a:visited {
+    color: #607890;
+}
+
+
+#cover img {
+  box-shadow: 0 0 6px #AAAAAA;
+  margin:10px;
+    -moz-border-radius: 0.25em 0.25em 0.25em 0.25em;
+ max-width: 400px;
+}
