@@ -1,21 +1,14 @@
 #!/usr/bin/env perl
 #==========================================================================
 #
-#         FILE: update_rss.pl
+#         FILE: relocate.pl
 #
-#  DESCRIPTION:  Relocate rss mp3 entities
+#  DESCRIPTION:  Relocate images
 #       AUTHOR:  Aliaksandr P. Zahatski (Mn), <zahatski@gmail.com>
 #==========================================================================
 
-#0 *  * * * ( wget -O /tmp/pod.xml 'http://pipes.yahoo.com/pipes/pipe.run?_id=ff7971ec00d13e5b66d2a6697e675819&_render=rss' && $HOME/bin/relocaterss.pl < /tmp/pod.xml > /usr/home/zag/sites/gwh.zag.ru/www/pod.out.xml ) >> /tmp/podcasts.update.log 2>&1
-
-our $LOCAL_DIR;
-our $FILE_PREFIX;
-
-our %NEWFILES;
 package Relocate;
 
-#use constant LOCAL_DIR => '/usr/home/zag/sites/gwh.zag.ru/www/data';
 use warnings;
 use strict;
 use XML::ExtOn;
@@ -56,10 +49,6 @@ sub on_start_element {
 	$out->print(<$fh>);
 	$fh->close;
 	$out->close;
-	
-#	diag Dumper($attr);
-#	diag "GET * ". $attr->{fileref}."\n";
-#	diag  "LOCAL:" . $self->{er};
 	diag "copy $orig $dst_copy";
 	
 	
@@ -70,7 +59,6 @@ sub on_start_element {
 sub on_characters {
     my ( $self, $elem, $str ) = @_;
     utf8::encode( $str) if utf8::is_utf8($str);
-#    warn "utf!" if utf8::is_utf8($str);
     $elem->{STR} = $str;
     return $str;
 }
@@ -87,7 +75,6 @@ use Data::Dumper;
 use Test::More;
 use XML::ExtOn qw(create_pipe);
 use XML::SAX::Writer;
-#use open ':encoding(utf8)';
 use open ':utf8';
 
 my ( $help, $man, $dir, $prefix, $todir );
@@ -97,57 +84,40 @@ my %opt = (
     'dir|d=s'    => \$dir,
     'prefix|p=s' => \$prefix,
     'todir=s'	 =>\$todir
-);    #meta=>\$meta,);
+);
 GetOptions(%opt)
-
-  #, 'help|?', 'man', 'dir|d=s', 'cid|s=s', 'f', 'url|u=s', 'list|l' )
   or pod2usage(2);
 pod2usage(1) if $help;
 pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
 
-if ($dir) {
-#    pod2usage(
-#        -exitstatus => 2,
-#        -message    => "Not exists out dir [-d] : $dir"
-#    ) unless -e $dir;
-}
-else {
+unless ($dir) {
     pod2usage( -exitstatus => 2, -message => 'Need  out dir [-d] !' );
 }
 
 pod2usage( -exitstatus => 2, -message => 'Need  prefix for files [-p] !' )
   unless $prefix;
 
-$LOCAL_DIR   = $dir;
-$FILE_PREFIX = $prefix;
-
-#exit;
-
-#my $buf;
-#my $w = new XML::SAX::Writer:: { Output => $buf };
 my $w = new XML::SAX::Writer:: { Output => \*STDOUT };
 my $r = new Relocate:: from=>$dir, to=>$prefix, todir=>$todir;
 my $parser = create_pipe( $r, $w );
-#undef $/;
 $parser->parse(\*STDIN);
-#print $buf;
-# delete old files
 
 =head1 NAME
 
-  B<update_rss.pl>  - command line tool for update partners RSS
+  B<relocate.pl>  - relocate images
 
 =head1 SYNOPSIS
 
-  update_rss.pl -d ../www/data/mp3 -prefix ../mp3 < remote.xml > ../www/data/rss.xml
+ relocate.pl -d SRC_DIR  -p ../img/ -todir DST_DIR
 
 
    options:
 
     -help  - print help message
     -man   - print man page
-    -d dir  - out dir for mp3 files
-    -prefix - prefix for path in xml for files
+    -d dir  - out dir for img files
+    -p - prefix for path in xml for files
+    -todir  - dst dir
 
 =head1 OPTIONS
 
@@ -161,20 +131,7 @@ Print a brief help message and exits
 
 Prints manual page and exits
 
-=item B<-c> L<config filename>
-
-Set L<config filename> config file name
-
 =back
-
-=head1 DESCRIPTION
-
-  B<update_rss.pl>  - command line tool for update partners RSS
-
-=head1 EXAMPLE
-
-   update_rss.pl -c ../etc/krs.ini  
-
 
 =head1 AUTHOR
 
@@ -182,7 +139,7 @@ Zahatski Aliaksandr, E<lt>zahatski@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2008 by Zahatski Aliaksandr
+Copyright 2012 by Zahatski Aliaksandr
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
