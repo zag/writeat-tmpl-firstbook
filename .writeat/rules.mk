@@ -45,4 +45,4 @@ html-chunk.done: $(WORKDIR_HTML-CHUNK) $(DOCBOOK_NAME) img.done
 	$(CHUNK_STYLESHEET) $(DOCBOOK_NAME) &&  cp $(CSS_FILE) $(WORKDIR_HTML-CHUNK)/docstyles.css && touch $@
 
 clean:
-	-@rm -dRf *.done work book img
+	-@rm -Rf *.done work book img
